@@ -18,10 +18,13 @@ import numpy as np
 from scipy.interpolate import Rbf, interp1d
 from scipy.optimize import minimize
 
+from skimage.io import imread
 from skimage.util import img_as_float
 from skimage.feature import corner_harris, corner_subpix, corner_peaks
-from skimage.io import imread
 
+from matplotlib import pyplot as plt
+
+import utils
 
 #-------------------------------------------
 #  Parameters (to set somehow)
@@ -38,322 +41,321 @@ from skimage.io import imread
 #h = 10.
 #alpha = .24
 
-############################################################
-#
-#  Functions
-#
-############################################################
 
-def replace_file_extension (fname, ext) :
-    return fname[:-1-fname[::-1].find('.')] + ext
-
-
-def change_file_extension (fname, ext1, ext2) :
-    return fname[:-len(ext1)] + ext2
-
-
-def coords (img) :
-    """Finds the corners on an image using Harris corner detector"""
-    c = corner_peaks(corner_harris(img), min_distance=8)
-    c0 = corner_subpix(img, c, window_size=13)
-    return c0
-
-
-def closest_point_to (points_list, point) :
-    """Finds the closest point to a given point in a list"""
-    i = np.argmin((points_list[:,0]-point[0])**2
-                  +(points_list[:,1]-point[1])**2)
-    return i
-
-    
-def transfer_point (i, basecor, newcor) :
-    """Transfers a point (given by its index) between two lists"""
-    newcor.append(basecor[i])
-    basecor = np.delete(basecor, i, 0)
-    return basecor, newcor
-
-    
-def lattice_matching (cor) :
-    """Matches a set of points to a square lattice"""
-    basecor = cor
-
-    i0 = closest_point_to (cor, np.mean(cor, axis=0))
-
-    newcor = []
-
-    basecor, newcor = transfer_point(i0, basecor, newcor)
-
-    i1 = closest_point_to (basecor, newcor[0])
-    basecor, newcor = transfer_point(i1, basecor, newcor)
-
-    v1 = np.array(newcor[1]-newcor[0])
-    v2 = np.array([-v1[1], v1[0]])
-
-    cor_lm = []
-    for c in cor :
-        nx = np.round(sum((c - newcor[0])*v1)/sum(v1**2))
-        ny = np.round(sum((c - newcor[0])*v2)/sum(v2**2))
-        cor_lm.append([c[0], c[1], nx, ny])
-        
-    return np.array(cor_lm)
-
-
-def point_from_indices(lmpts, i, j) :
-    """Extracts a point with given indices"""
-    i0 = set(np.where(lmpts[:,2] == i)[0]) & set(np.where(lmpts[:,3] == j)[0])
-    return lmpts[list(i0)[0], :2]
-
-
-def base(lmpts) :
-    """Returns the central point and the base of a list of
-       lattice matched points"""
-    
-    xy0 = point_from_indices(lmpts, 0, 0)
-    xy1 = point_from_indices(lmpts, 1, 0)
-    v1 = xy1 - xy0
-    v2 = np.array([-v1[1], v1[0]])
-    
-    return xy0, v1, v2
-
-    
-def displacement(lmpts, pixmm, sqmm) :
-    """Finds the displacement for lattice matched points
-    
-    Uses the square size (pixmm) and the pixel size (sqmm)
+class DeformedCheckerboard :
     """
-    
-    npts = len(lmpts[:,0])
-    
-    xy0, v1, v2 = base(lmpts)
-    v1 = v1*sqmm/np.sqrt(sum(v1**2))
-    v2 = v2*sqmm/np.sqrt(sum(v2**2))
-    
-    coords0 = np.tensordot(lmpts[:,2], v1, axes=0) +\
-              np.tensordot(lmpts[:,3], v2, axes=0)
-              
-    coords = pixmm*(lmpts[:,:2] - np.tensordot(np.ones(npts), xy0, axes=0))
-    
-    A = np.zeros((npts, 4))
-    A[:,:2] = coords0
-    A[:,2:] = coords - coords0
-    
-    return A
-    
+    Deformed checkerboard image, identified points, lattice matching, etc.
+    """
 
-def matching_points (c1, c2, match_range) :
-    """Finds the matching points between two lists of points"""
-    mpts = []
-    for i in range(np.shape(c1)[0]) :
-        x1, y1 = c1[i, 0], c1[i, 1]
-        dists2 = (c2[:,0]-x1)**2+(c2[:,1]-y1)**2
-        if min(dists2) < match_range**2 :
-            j = np.where(dists2 == min(dists2))[0][0]
-            mpts.append([i,j])
+    def __init__(self, image_file, pixmm=0.025, sqmm=0.5, h=10., alpha=.24):
+        self.image = img_as_float(imread(image_file, as_gray=True))
+        self.pixmm = pixmm
+        self.sqmm  = sqmm
+        self.h     = h
+        self.alpha = alpha
+        
+    
+    def detect_corners (self, min_distance=5, window_size=13, verbose=True):
+        """
+        Detects the corners of the image using the Harris corner detector
+        """
+        c = corner_peaks(corner_harris(self.image), min_distance=min_distance)
+        csp = corner_subpix(self.image, c, window_size=window_size)
+        self.corners = self.pixmm*csp
+        
+        if verbose :
+            print("detect_corners: {} corners detected".format(np.shape(self.corners)[0]))
+        
+        return np.shape(self.corners)[0]
+    
+    
+    def lattice_matching (self) :
+        """Matches the corners to a square lattice"""
+        
+        if not hasattr(self, 'corners'):
+            self.detect_corners()
             
-    return mpts
-
-
-def compose_mpts (m1, m2) :
-    """compose two sets of matching points"""
-    m = []
-    for p in m1 :
-        for pp in m2 :
-            if p[1] == pp[0] :
-                m.append([p[0],pp[1]])
-    return m
-
-
-def matching_coords_displ (c1, c2, m, d01, pixmm) :
-    """coordinates and displacements of two sets points
-       with the match list, with initial displacement and dimensional
-       constants"""
-       
-    mc1 = []
-    mc2 = []
-    disp = []
-    for match in m :
-        xy0 = d01[match[0], :2]
+        center = np.mean(self.corners, axis=0)
         
-        xy1 = c1[match[0], :]
-        xy2 = c2[match[1], :]
-        d12 = pixmm*(xy2-xy1)
-
-        d02 = d01[match[0], 2:] + d12
+        I = np.argsort(np.sum((self.corners - 
+                       np.tensordot(np.ones(np.shape(self.corners)[0]), 
+                                    center, axes=0))**2,
+                       axis=1))
+                       
+        center = self.corners[I[0]]
+        v1 = self.corners[I[1]] - center
+        v2 = np.array([-v1[1], v1[0]])
         
-        disp.append([xy0[0], xy0[1], d02[0], d02[1]])
-  
-    return np.array(disp)
-    
-
-def track_displacement (clm_file, c_files, match_range, pixmm, sqmm):
-    """Track points through a list of remarkable points and gets
-       the displacement"""
-    
-    # Displacement of the lattice matched points (1st file)
-    lmpts = np.loadtxt(clm_file)
-    disp0 = displacement(lmpts, pixmm, sqmm)
-    
-    corners = [np.loadtxt(cfile) for cfile in c_files]
-    
-    mpts = []
-    for i, c in enumerate(corners[:-1]) :
-        mpts.append(matching_points(corners[i], corners[i+1], match_range))
-    
-    m = mpts[0]
-    disp = matching_coords_displ(corners[0], corners[1], m, disp0, pixmm)
-    dfile = change_file_extension(c_files[1], 'pts.dat', 'disp.npy')
-    np.save(dfile, disp)
-
-    for i in range(1, len(c_files)-1) :
-        m = compose_mpts(m, mpts[i])
-        disp = matching_coords_displ(corners[0], corners[i+1], m, disp0, pixmm)
-        dfile = change_file_extension(c_files[i+1], 'pts.dat', 'disp.npy')
-        np.save(dfile, disp)
+        v1n = v1/np.sqrt(sum(v1**2))
+        v2n = v2/np.sqrt(sum(v2**2))
         
-    return 0
-
-
-#-------------------------------------------
-#  Curvature from the displacement
-#-------------------------------------------
-
-
-def grad_from_disp(disp, h, alpha) :
-    """"Converts the displacement into height gradient"""
-    disp[:,2:] = -disp[:,2:]/(alpha*h)
-    return disp
+        # This could be done without a loop
+        cor_lm = []
+        for c in self.corners :
+            nx = np.round(sum((c - center)*v1)/sum(v1**2))
+            ny = np.round(sum((c - center)*v2)/sum(v2**2))
+            cor_lm.append([c[0], c[1], nx, ny, 
+                           self.sqmm*(nx*v1n[0]+ny*v2n[0]), 
+                           self.sqmm*(nx*v1n[1]+ny*v2n[1])])
+        
+        self.lm_corners = np.array(cor_lm)
     
     
-def grad_from_disp_shift(disp, h, alpha) :
-    """"Same as grad_from_disp, but the base points are shifted by the 
-    displacement"""
-    disp[:,:2] = disp[:,:2] + disp[:,2:]
-    disp[:,2:] = -disp[:,2:]/(alpha*h)
-    return disp
+    def point_from_indices(self, i, j) :
+        """
+        Extracts a point with given indices in the list of lattice matched
+        corners
+        """
+        
+        if not hasattr(self, 'lm_corners'):
+            self.lattice_matching()
+            
+        i0 = set(np.where(self.lm_corners[:,2] == i)[0]) & \
+             set(np.where(self.lm_corners[:,3] == j)[0])
+             
+        return self.lm_corners[list(i0)[0], :2]
 
+
+    def base(self) :
+        """Returns the central point and the base for lattice matched points"""
+        
+        xy0 = self.point_from_indices(0, 0)
+        xy1 = self.point_from_indices(1, 0)
+        v1 = xy1 - xy0
+        v2 = np.array([-v1[1], v1[0]])
+        
+        return xy0, v1, v2
+        
     
-def curv_from_grad(grad, dx, eps) :
-    """Interpolates a gradient field and compute its divergence to get
-    a curvature field"""
+    def lattice_matching_tracking (self, ref_im, **kwargs) :
+        """
+        Tracks the points between the reference image and self and transfer the
+        lattice matching of the reference image to self.
+        """
+        if not hasattr(self, 'corners'):
+            self.detect_corners()
+            
+        if not hasattr(ref_im, 'lm_corners'):
+            ref_im.lattice_matching()
+            
+        match_range = kwargs.get('match_range', self.sqmm/5.)
+        verbose = kwargs.get('verbose', True)
+         
+        matches = utils.matching_points(ref_im.lm_corners, self.corners, match_range)
+        
+        if verbose :
+            print('lattice_matching_tracking: {} matches found'.format(len(matches)))
+        
+        cor_lm = []
+        for m in matches :
+            cor_lm.append([self.corners[m[1],0], self.corners[m[1],1]] +
+                           list(ref_im.lm_corners[m[0],2:]))
+        
+        self.lm_corners = np.array(cor_lm)
+
+
+    def disp_from_lm_corners (self) :
+        """
+        Computes the displacement field.
+        """
+        if not hasattr(self, 'lm_corners'):
+            self.lattice_matching()
+            
+        xy0 = self.base()[0]
+        
+        disp = self.lm_corners
+        disp[:,2:4] = disp[:,:2]-disp[:,4:]-np.tensordot(np.ones(np.shape(disp)[0]), 
+                                    xy0, axes=0)
+        self.disp = disp[:,:4]
+        
+        
+    def grad_from_disp(self) :
+        """"Converts the displacement into height gradient"""
+        if not hasattr(self, 'disp'):
+            self.disp_from_lm_corners()
+            
+        grad = self.disp
+        grad[:,2:] = -grad[:,2:]/(self.alpha*self.h)
+        self.grad = grad
+        
+        
+    def grad_from_disp_shift(self) :
+        """"Same as grad_from_disp, but the base points are shifted by the 
+        displacement"""
+        if not hasattr(self, 'disp') :
+            self.disp_from_lm_corners()
+            
+        grad = self.disp
+        grad[:,:2] = grad[:,:2] + grad[:,2:]
+        grad[:,2:] = -grad[:,2:]/(self.alpha*self.h)
+        self.grad = grad
+
+        
+    def curv_from_grad(self, **kwargs) :
+        """Interpolates a gradient field and compute its divergence to get
+        a curvature field"""
+        if not hasattr(self, 'grad') :
+            self.grad_from_disp()
+            
+        dx  = kwargs.get('dx',  self.sqmm/4.)
+        eps = kwargs.get('eps', self.sqmm/4.)
+            
+        xmin = min(self.grad[:,0])
+        xmax = max(self.grad[:,0])
+        ymin = min(self.grad[:,1])
+        ymax = max(self.grad[:,1])
+
+        x = np.linspace(xmin, xmax, num=int(np.ceil((xmax-xmin)/dx)))
+        y = np.linspace(ymin, ymax, num=int(np.ceil((ymax-ymin)/dx)))
+
+        dx = x[1]-x[0]
+        dy = y[1]-y[0]
+        nx = len(x)
+        ny = len(y)
+
+        rbfx = Rbf(self.grad[:,0], self.grad[:,1], self.grad[:,2])
+        rbfy = Rbf(self.grad[:,0], self.grad[:,1], self.grad[:,3])
+
+        X, Y = np.meshgrid(x, y, indexing='ij')
+
+        C = np.zeros((nx, ny, 3))
+        C[:,:,0] = X
+        C[:,:,1] = Y
+
+        Curvx = (rbfx(X+eps, Y) - rbfx(X-eps, Y))/(2.*eps)
+        Curvy = (rbfy(X, Y+eps) - rbfy(X, Y-eps))/(2.*eps)
+        C[:,:,2] = (Curvx+Curvy)/2.
+
+        self.curv = C
+
+        
+    def axisym_curv(self, n=50) :
+        """
+        Axisymmetric interpolation of the curvature
+        """
+        if not hasattr(self, 'curv'):
+            self.curv_from_grad()
+        
+        X = self.curv[:,:,0]
+        Y = self.curv[:,:,1]
+        Z = self.curv[:,:,2]
+        
+        center, axifun, axidata = utils.axi_function(X, Y, Z)
+        
+        self.axicurv = axifun
+
+
+    def print_corners (self) :
+        print(self.corners)
     
-    xmin = min(grad[:,0])
-    xmax = max(grad[:,0])
-    ymin = min(grad[:,1])
-    ymax = max(grad[:,1])
-
-    x = np.linspace(xmin, xmax, num=int(np.ceil((xmax-xmin)/dx)))
-    y = np.linspace(xmin, xmax, num=int(np.ceil((ymax-ymin)/dx)))
-
-    dx = x[1]-x[0]
-    dy = y[1]-y[0]
-    nx = len(x)
-    ny = len(y)
-
-    rbfx = Rbf(grad[:,0], grad[:,1], grad[:,2])
-    rbfy = Rbf(grad[:,0], grad[:,1], grad[:,3])
-
-    X, Y = np.meshgrid(x, y, indexing='ij')
-
-    C = np.zeros((nx, ny, 3))
-    C[:,:,0] = X
-    C[:,:,1] = Y
-
-    Curvx = (rbfx(X+eps, Y) - rbfx(X-eps, Y))/(2.*eps)
-    Curvy = (rbfy(X, Y+eps) - rbfy(X, Y-eps))/(2.*eps)
-    C[:,:,2] = (Curvx+Curvy)/2.
-
-    return C
-
-
-def curv_from_disp_export (disp_file, h, alpha, dx, eps) :
-    disp = np.load(disp_file)
-    grad = grad_from_disp(disp, h, alpha)
-    C = curv_from_grad(grad, dx, eps)
-    curv_file = change_file_extension(disp_file, 'disp.npy', 'curv.npy')
-    np.save(curv_file, C)
-    return 0
-
-
-#-------------------------------------------
-#  Axisymmetrization of the curvature field
-#-------------------------------------------
-
-
-def axi_score(R, Z, n, R_range=.9) :
-    rmax = R_range*max(R)
-    Rbins = np.linspace(0, rmax, n)
-    RZm = []
-    for i in range(n-1) :
-        I = np.where((R-Rbins[i])*(R-Rbins[i+1])<0)[0]
-        if len(I) > 0 :
-            RZm.append([(Rbins[i]+Rbins[i+1])/2., np.mean(Z[I])])
     
-    RZm = np.array(RZm)
-
-    zfun = interp1d(RZm[:,0], RZm[:,1])
+    def print_lm_corners (self) :
+        print(self.lm_corners)
+        
     
-    I = np.where((R - RZm[0,0])*(R-RZm[-1,0]) < 0.)[0]
-    Rcomp = R[I]
-    Zcomp = Z[I]
+    def plot_corners (self) :
+        """
+        Shows the image with the corners on it
+        """
+        
+        if not hasattr(self, 'corners'):
+            self.detect_corners()
+            
+        xmin, xmax = min(self.corners[:,0]), max(self.corners[:,0])
+        ymin, ymax = min(self.corners[:,1]), max(self.corners[:,1])
+        dx = max(xmax - xmin, ymax - ymin)
+        xm = (xmax+xmin)/2.
+        ym = (ymax+ymin)/2.
+        xmin = xm - .7*dx
+        xmax = xm + .7*dx
+        ymin = ym - .7*dx
+        ymax = ym + .7*dx
+        
+        S = np.shape(self.image)
+        X = self.pixmm*np.arange(S[0])
+        Y = self.pixmm*np.arange(S[1])
+        XX, YY = np.meshgrid(X, Y)
+        
+        fig, ax = plt.subplots(1, 1, figsize=(8, 8))
+        ax.axis((xmin, xmax, ymin, ymax))
+        pcm = ax.pcolormesh(XX, YY, self.image.transpose(), cmap='Greys')
+        ax.scatter(self.corners[:, 0], self.corners[:, 1])
+        
+        plt.show()
+        
     
-    score = np.mean((Zcomp-zfun(Rcomp))**2)
-    
-    return score, RZm
-    
+    def plot_lattice_matching (self) :
+        """
+        Shows the image with the matched lattice
+        """
+        
+        if not hasattr(self, 'lm_corners'):
+            self.lattice_matching()
+            
+        xmin, xmax = min(self.corners[:,0]), max(self.corners[:,0])
+        ymin, ymax = min(self.corners[:,1]), max(self.corners[:,1])
+        dx = max(xmax - xmin, ymax - ymin)
+        xm = (xmax+xmin)/2.
+        ym = (ymax+ymin)/2.
+        xmin = xm - .7*dx
+        xmax = xm + .7*dx
+        ymin = ym - .7*dx
+        ymax = ym + .7*dx
+        
+        S = np.shape(self.image)
+        X = self.pixmm*np.arange(S[0])
+        Y = self.pixmm*np.arange(S[1])
+        XX, YY = np.meshgrid(X, Y)
 
-def radialize(X, Y, x0, y0) :
-    """Distances of points to a reference point"""
-    return np.sqrt((X-x0)**2+(Y-y0)**2)
-    
+        fig, ax = plt.subplots(1, 1, figsize=(8, 8))
+        ax.axis((xmin, xmax, ymin, ymax))
+        pcm = ax.pcolormesh(XX, YY, self.image.transpose(), cmap='Greys')
+        
+        nl = 7
+        xy0, v1, v2 = self.base()
+        for i in range(-nl, nl+1):
+            ax.plot([xy0[0] - nl*v1[0] + i*v2[0], xy0[0] + nl*v1[0] + i*v2[0]],
+                    [xy0[1] - nl*v1[1] + i*v2[1], xy0[1] + nl*v1[1] + i*v2[1]],
+                    'r-')
+                    
+            ax.plot([xy0[0] + i*v1[0] - nl*v2[0], xy0[0] + i*v1[0] + nl*v2[0]],
+                    [xy0[1] + i*v1[1] - nl*v2[1], xy0[1] + i*v1[1] + nl*v2[1]],
+                    'r-')
+            
 
-def to_minimize(x, X, Y, Z, n) :
-    return axi_score(radialize(X, Y, x[0], x[1]), Z, n)[0]
+        ax.scatter(self.corners[:, 0], self.corners[:, 1])
+                
+        plt.show()
+        
+        
+    def plot_disp(self) :
+        """
+        Plots the displacement field.
+        """
+        if not hasattr(self, 'disp'):
+            self.disp_from_lm_corners()
+        
+        fig, ax = plt.subplots(1, 1, figsize=(8, 8))
+        
+        ax.quiver(self.disp[:, 0], self.disp[:, 1], 
+                  self.disp[:, 2], self.disp[:, 3], 
+                  angles='xy', scale_units='xy', scale=1)
+        
+        plt.show()
 
+        
+    def plot_curvature (self) :
+        """
+        Plots the curvature field.
+        """
+        if not hasattr(self, 'curv'):
+            self.curv_from_grad()
 
-def find_center(X, Y, Z, xguess, yguess, n) :
-    m = minimize(lambda x: to_minimize(x, X, Y, Z, n), [xguess, yguess])
-    return m['x'], m['fun']
+        fig, ax = plt.subplots(1, 1, figsize=(8, 8))
+        
+        pcm = ax.pcolormesh(self.curv[:,:,0], self.curv[:,:,1], 
+                            self.curv[:,:,2], cmap='RdBu_r')
+        fig.colorbar(pcm, ax=ax, orientation='vertical')
 
+        plt.show()      
 
-def axi_function(data_file, n=50, xguess=0., yguess=0.) :
-    """Fits a axisymmetric function to a 2d function
-    
-    Returns:
-      - center
-      - interpolated axisymmetric function
-      - initial values as a function of the distance to the center
-    """
-    data = np.load(datafile)
-
-    X = data[:,:,0]
-    Y = data[:,:,1]
-    Z = data[:,:,2]
-
-    x0 = xguess
-    y0 = yguess
-
-    n = 50
-
-    result = find_center(X.flatten(), Y.flatten(), Z.flatten(), x0, y0, n)
-    x0 = result[0][0]
-    y0 = result[0][1]
-
-    s, RZm = axi_score(radialize(X, Y, x0, y0).flatten(), Z.flatten(), n)
-    R = radialize(X, Y, x0, y0).flatten()
-    
-    return result[0], RZm, np.array(list(zip(R, Z.flatten())))
-
-
-def axi_function_export(data_file, n=50) :
-    center, A, B = axi_function(data_file)
-    print(data_file + ': ' + str(center))
-
-    center_file = change_file_extension(data_file, '_curv.npy', '_curv_center.npy')
-    np.save(center_file, center)
-
-    axi_file = change_file_extension(data_file, '_curv.npy', '_curv_axi.npy')
-    np.save(axi_file, A)
-
-    radial_file = change_file_extension(data_file, '_curv.npy', '_curv_rad.npy')
-    np.save(radial_file, B)
-    
