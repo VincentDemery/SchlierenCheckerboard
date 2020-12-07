@@ -23,8 +23,8 @@ def matching_points (c1, c2, match_range) :
 
 #This could be improved a lot and maybe incorporated in schlieren_checkerboard
 
-def axi_score(R, Z, n) :
-    rmax = .9*max(R)
+def axi_score(R, Z, n, ratio=.7) :
+    rmax = ratio*max(R)
     Rbins = np.linspace(0, rmax, n)
     RZm = []
     for i in range(n-1) :
@@ -61,13 +61,30 @@ def find_center(X, Y, Z, xguess, yguess, n) :
 def axi_function(X, Y, Z, n=50, **kwargs) :
     x0 = kwargs.get('xguess', np.mean(X))
     y0 = kwargs.get('yguess', np.mean(Y))
+    optimize = kwargs.get('optimize', True)
 
-    result = find_center(X.flatten(), Y.flatten(), Z.flatten(), x0, y0, n)
-    x0 = result[0][0]
-    y0 = result[0][1]
+    if optimize :
+        result = find_center(X.flatten(), Y.flatten(), Z.flatten(), x0, y0, n)
+        x0 = result[0][0]
+        y0 = result[0][1]
 
     s, RZm = axi_score(radialize(X, Y, x0, y0).flatten(), Z.flatten(), n)
     R = radialize(X, Y, x0, y0).flatten()
     
-    return result[0], RZm, np.array(list(zip(R, Z.flatten())))
+    return [x0,y0], RZm, np.array(list(zip(R, Z.flatten())))
 
+
+def fit_gradient_const_curv(grad) :
+    """
+    Fits a gradient field to a gradient corresponding to a constant curvature
+    """
+    xi, yi = grad[:,0], grad[:,1]
+    ui, vi = grad[:,2], grad[:,3]
+    xm, ym = np.mean(xi), np.mean(yi)
+    xip, yip = xi-xm, yi-ym
+    
+    c = np.sum(xip*ui+yip*vi)/np.sum(xip**2+yip**2)
+    xc = -np.mean(ui)/c + xm
+    yc = -np.mean(vi)/c + ym
+
+    return [c, xc, yc]
