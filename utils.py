@@ -47,6 +47,40 @@ def axi_score(R, Z, n, ratio=.7) :
 
 def radialize(X, Y, x0, y0) :
     return np.sqrt((X-x0)**2+(Y-y0)**2)
+
+
+def polar_proj_vec(v, x0, y0) :
+    """
+    Returns the polar projection of a vector field
+    
+    Parameters
+    ----------
+    v : array
+        Vector field, as a 4 columns array (x, y, vx, vy)
+    x0 : float
+        x-coordinate of the polar center
+    y0 : float
+        y-coordinate of the polar center
+    
+    Returns
+    -------
+    array
+        Array with a line for each point and 3 columns (r, vr, vtheta).
+    """
+    npts = np.shape(v)[0]
+    
+    # position relative to the center, unit vector and its perpendicular
+    Rr = v[:,:2] - np.tensordot(np.ones(npts), [x0, y0], axes=0)
+    Rrn = Rr/np.tensordot(np.sqrt(Rr[:,0]**2 + Rr[:,1]**2), [1,1], axes=0)
+        
+    RPJ = np.zeros((npts, 3))
+    RPJ[:,0] = radialize(v[:,0], v[:,1], x0, y0)
+    RPJ[:,1] = v[:,2]*Rrn[:,0] + v[:,3]*Rrn[:,1]
+    RPJ[:,2] = - v[:,2]*Rrn[:,1] + v[:,3]*Rrn[:,0]
+    
+    return RPJ
+    
+    
     
 
 def to_minimize(x, X, Y, Z, n) :
@@ -71,7 +105,7 @@ def axi_function(X, Y, Z, n=50, **kwargs) :
     s, RZm = axi_score(radialize(X, Y, x0, y0).flatten(), Z.flatten(), n)
     R = radialize(X, Y, x0, y0).flatten()
     
-    return [x0,y0], RZm, np.array(list(zip(R, Z.flatten())))
+    return [x0,y0], RZm, [R, Z.flatten()]
 
 
 def fit_gradient_const_curv(grad) :
