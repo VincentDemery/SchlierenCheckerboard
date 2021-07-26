@@ -5,17 +5,17 @@ Contributor: Vincent Démery <vincent.demery@espci.psl.eu>
 
 This file is part of schlieren_checkerboard.
 
-schlieren_checkerboard is free software: you can redistribute it and/or modify
+SchlierenCheckerboard is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License version 2 as published by
 the Free Software Foundation.
 
-schlieren_checkerboard is distributed in the hope that it will be useful, but 
+SchlierenCheckerboard is distributed in the hope that it will be useful, but 
 WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
 FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
 details.
 
 You should have received a copy of the GNU General Public License
-along with schlieren_checkerboard.  If not, see <http://www.gnu.org/licenses/>.
+along with SchlierenCheckerboard.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 """
