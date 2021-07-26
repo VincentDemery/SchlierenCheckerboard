@@ -1,10 +1,25 @@
 """
-Schlieren method for a checkerboard pattern
-===========================================
+Copyright (C) ESPCI Paris PSL (2021)
 
-Set of functions to use the Schlieren method to find the shape of an interface
-from the deformations of a checkerboard pattern.
+Contributor: Vincent Démery <vincent.demery@espci.psl.eu>
 
+This file is part of schlieren_checkerboard.
+
+schlieren_checkerboard is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License version 2 as published by
+the Free Software Foundation.
+
+schlieren_checkerboard is distributed in the hope that it will be useful, but 
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+details.
+
+You should have received a copy of the GNU General Public License
+along with schlieren_checkerboard.  If not, see <http://www.gnu.org/licenses/>.
+"""
+
+"""
+Main class and methods for the schlieren_checkerboard.
 """
 
 import numpy as np
@@ -211,6 +226,18 @@ class DeformedCheckerboard :
         """
         Extracts a point with given indices in the list of lattice matched
         corners
+        
+        Parameters
+        ----------
+        i : int
+            line index of the point
+        j : int
+            column index of the point
+            
+        Returns
+        -------
+        array
+            Coordinates of the point.
         """
         
         if not hasattr(self, 'lm_corners'):
@@ -704,7 +731,7 @@ class DeformedCheckerboard :
         rc, shift, rp_grad = self.rp_grad
         
         
-        fig, ax = plt.subplots(1, 2, figsize=(12, 6))
+        fig, ax = plt.subplots(1, 2, figsize=(10, 4))
         
         new_grad = np.copy(self.grad)
         npts = np.shape(self.grad)[0]
@@ -761,7 +788,7 @@ class DeformedCheckerboard :
             self.axisym_curv()
 
 
-        fig, ax = plt.subplots(1, 2, figsize=(12, 6))
+        fig, ax = plt.subplots(1, 2, figsize=(10, 4))
         
         ax[0].set_xlabel('$x$ [mm]')
         ax[0].set_ylabel('$y$ [mm]')
