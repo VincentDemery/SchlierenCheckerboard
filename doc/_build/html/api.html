@@ -1,0 +1,665 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>API Reference &mdash; Schlieren_Checkerboard  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="SchlierenCheckerboard Demo" href="SC_Demo.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Schlieren_Checkerboard
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="userguide.html">User guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#schlieren-method-for-a-checkerboard-pattern">Schlieren method for a checkerboard pattern</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Schlieren_Checkerboard</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>API Reference</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="module-schlieren_checkerboard.main">
+<span id="api-reference"></span><h1>API Reference<a class="headerlink" href="#module-schlieren_checkerboard.main" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="schlieren-method-for-a-checkerboard-pattern">
+<h2>Schlieren method for a checkerboard pattern<a class="headerlink" href="#schlieren-method-for-a-checkerboard-pattern" title="Permalink to this headline">¶</a></h2>
+<p>Set of functions to use the Schlieren method to find the shape of an interface
+from the deformations of a checkerboard pattern.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="schlieren_checkerboard.main.DeformedCheckerboard">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">schlieren_checkerboard.main.</span></span><span class="sig-name descname"><span class="pre">DeformedCheckerboard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pixmm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.025</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sqmm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.25</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#schlieren_checkerboard.main.DeformedCheckerboard" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deformed checkerboard image, identified points, lattice matching, etc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> – Grayscale image (array)</p></li>
+<li><p><strong>pixmm</strong> (<em>float</em>) – Size of a pixel (mm)</p></li>
+<li><p><strong>sqmm</strong> (<em>float</em>) – Size of a square (mm)</p></li>
+<li><p><strong>h</strong> (<em>float</em>) – Distance between the pattern and the interface (mm)</p></li>
+<li><p><strong>alpha</strong> (<em>float</em>) – Parameter for the optimal indices, <span class="math notranslate nohighlight">\(\alpha=1-n/n'\)</span> [Moisy et al.
+<em>Exp Fluids</em> (2009) 46:1021–1036]. For an air water interface,
+<span class="math notranslate nohighlight">\(\alpha\simeq 0.25\)</span> (default value).</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="schlieren_checkerboard.main.DeformedCheckerboard.center">
+<span class="sig-name descname"><span class="pre">center</span></span><a class="headerlink" href="#schlieren_checkerboard.main.DeformedCheckerboard.center" title="Permalink to this definition">¶</a></dt>
+<dd><p>Center region, circle of radius R centered at (x, y), set by [x, y, R]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="schlieren_checkerboard.main.DeformedCheckerboard.corners">
+<span class="sig-name descname"><span class="pre">corners</span></span><a class="headerlink" href="#schlieren_checkerboard.main.DeformedCheckerboard.corners" title="Permalink to this definition">¶</a></dt>
+<dd><p>Positions of the detected corners.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="schlieren_checkerboard.main.DeformedCheckerboard.lm_corners">
+<span class="sig-name descname"><span class="pre">lm_corners</span></span><a class="headerlink" href="#schlieren_checkerboard.main.DeformedCheckerboard.lm_corners" title="Permalink to this definition">¶</a></dt>
+<dd><p>Array with a line for each corner and 6 columns [x, y, index_x, index_y,
+x_reference, y_reference].
+Reference is the actual position of the point before displacement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="schlieren_checkerboard.main.DeformedCheckerboard.disp">
+<span class="sig-name descname"><span class="pre">disp</span></span><a class="headerlink" href="#schlieren_checkerboard.main.DeformedCheckerboard.disp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Array with a line for each corner and 4 columns [x, y, dx, dy], where
+(x, y) is the position of the corner on the image and (dx, dy) its
+displacement from its original position. The displacement of the central
+corner is set to 0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="schlieren_checkerboard.main.DeformedCheckerboard.grad">
+<span class="sig-name descname"><span class="pre">grad</span></span><a class="headerlink" href="#schlieren_checkerboard.main.DeformedCheckerboard.grad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gradient of the height of the interface. Array with a line for each
+corner and 4 columns [x, y, gx, gy], where (x, y) is the position of the
+corner on the image and (gx, gy) the height gradient.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="schlieren_checkerboard.main.DeformedCheckerboard.rp_grad">
+<span class="sig-name descname"><span class="pre">rp_grad</span></span><a class="headerlink" href="#schlieren_checkerboard.main.DeformedCheckerboard.rp_grad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Radial projection of the gradient field. List containing the center, the
+shift, and an array with a line for each corner and 3 columns (r,
+grad_r, grad_theta).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="schlieren_checkerboard.main.DeformedCheckerboard.curv">
+<span class="sig-name descname"><span class="pre">curv</span></span><a class="headerlink" href="#schlieren_checkerboard.main.DeformedCheckerboard.curv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Curvature field of the interface. List of three arrays: x, y, and the
+mean curvature. The curvature array is a masked array if the curvature
+has been computed with the <cite>mask_hull</cite> option (default).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="schlieren_checkerboard.main.DeformedCheckerboard.axicurv">
+<span class="sig-name descname"><span class="pre">axicurv</span></span><a class="headerlink" href="#schlieren_checkerboard.main.DeformedCheckerboard.axicurv" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of axisymmetry center ([x, y]), axisymmetric curvature (list of two
+arrays, r and curv), and curvature of the initial points (list of two
+arrays, r and curv).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="schlieren_checkerboard.main.DeformedCheckerboard.center_curv">
+<span class="sig-name descname"><span class="pre">center_curv</span></span><a class="headerlink" href="#schlieren_checkerboard.main.DeformedCheckerboard.center_curv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Curvature C of the center region, with the position (xc, yc) of the curvature center (x, y), [C, x, y].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="schlieren_checkerboard.main.DeformedCheckerboard.axisym_curv">
+<span class="sig-name descname"><span class="pre">axisym_curv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xguess</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yguess</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#schlieren_checkerboard.main.DeformedCheckerboard.axisym_curv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the axisymmetric interpolation of the curvature field.</p>
+<p>Sets the field axicurv.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xguess</strong> (<em>float</em>) – Guess for the x position of the axisymmetry center.
+If None (default) sets to the center of the curvature field.</p></li>
+<li><p><strong>yguess</strong> (<em>float</em>) – Guess for the y position of the axisymmetry center.</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – Number of points for the axisymmetric function</p></li>
+<li><p><strong>optimize</strong> (<em>bool</em>) – If True (default), minimizes the difference between the 2d curvature
+field and the axisymmetric function.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="schlieren_checkerboard.main.DeformedCheckerboard.base">
+<span class="sig-name descname"><span class="pre">base</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#schlieren_checkerboard.main.DeformedCheckerboard.base" title="Permalink to this definition">¶</a></dt>
+<dd><p>Central point and the base for lattice matched points</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><em>array</em> – coordinates of the central point</p></li>
+<li><p><em>array</em> – coordinates of the first base vector</p></li>
+<li><p><em>array</em> – coordinates of the second base vector</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="schlieren_checkerboard.main.DeformedCheckerboard.compute_center_curv">
+<span class="sig-name descname"><span class="pre">compute_center_curv</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#schlieren_checkerboard.main.DeformedCheckerboard.compute_center_curv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the average curvature in the center region</p>
+<p>Finds the least-square best approximation to the gradient in the        center region, defined by the field <cite>center</cite>.</p>
+<p>Sets the field <cite>center_curv</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="schlieren_checkerboard.main.DeformedCheckerboard.compute_center_curv_errorbars">
+<span class="sig-name descname"><span class="pre">compute_center_curv_errorbars</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ncopies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stdev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#schlieren_checkerboard.main.DeformedCheckerboard.compute_center_curv_errorbars" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the average curvature in the center region for many copies
+with randomized points and return mean and standard deviation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ncopies</strong> (<em>int</em>) – Number of copies to use.</p></li>
+<li><p><strong>stdev</strong> (<em>float</em>) – Standard deviation used to randomize the corners. If <cite>None</cite>, set to
+the pixel size <cite>pixmm</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>float</em> – Mean of the curvature in the center.</p></li>
+<li><p><em>float</em> – Standard deviation.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="schlieren_checkerboard.main.DeformedCheckerboard.curv_from_grad">
+<span class="sig-name descname"><span class="pre">curv_from_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#schlieren_checkerboard.main.DeformedCheckerboard.curv_from_grad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interpolates a gradient field and compute its divergence to get
+a curvature field.</p>
+<p>Sets the field <cite>curv</cite>.</p>
+<p>The step of the interpolation grid is set by the keyword argument <strong>dx</strong>
+(<em>float</em>), the derivative is computed with a step <strong>eps</strong> (<em>float</em>).</p>
+<p>If <strong>mask_hull</strong> (<em>bool</em>) is <cite>True</cite> (default), the interpolation is
+restricted to the convex hull of the detected corners; a masked array
+is used for the curvature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – Arbitrary keyword arguments.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="schlieren_checkerboard.main.DeformedCheckerboard.detect_corners">
+<span class="sig-name descname"><span class="pre">detect_corners</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold_rel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.02</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">13</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#schlieren_checkerboard.main.DeformedCheckerboard.detect_corners" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detects the corners of the image using the Harris corner detector</p>
+<p>Sets the <cite>corners</cite> field to an array with a line for each corner and
+columns for x and y coordinates.</p>
+<p>Uses <cite>corner_harris</cite>, <cite>corner_peaks</cite> and <cite>corner_subpix</cite> from
+<cite>skimage.feature</cite>.</p>
+<p>If skimage.feature.corner_subpix fails (returns NaN), the initial corner
+is returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>min_distance</strong> (<em>int</em>) – min_distance argument for <cite>corner_peaks</cite>.</p></li>
+<li><p><strong>threshold_rel</strong> (<em>float</em>) – threshold_rel argument for <cite>corner_peaks</cite>.</p></li>
+<li><p><strong>window_size</strong> (<em>int</em>) – window_size argument for <cite>corner_subpix</cite>.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – If <cite>True</cite> (default), displays the number of detected corners.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Number of detected corners.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="schlieren_checkerboard.main.DeformedCheckerboard.disp_from_lm_corners">
+<span class="sig-name descname"><span class="pre">disp_from_lm_corners</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#schlieren_checkerboard.main.DeformedCheckerboard.disp_from_lm_corners" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the displacement field.</p>
+<p>Sets the field <cite>disp</cite> to an array with a line per corner and 4 columns.
+Columns: [x, y, x_displacement, y_displacement]</p>
+<p>Uses the reference information in the lm_corner field. Changes         the reference so that the displacement of corner 0 is zero.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="schlieren_checkerboard.main.DeformedCheckerboard.grad_from_disp">
+<span class="sig-name descname"><span class="pre">grad_from_disp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#schlieren_checkerboard.main.DeformedCheckerboard.grad_from_disp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the displacement into height gradient</p>
+<p>Sets field grad to the gradient calculated from the displacement
+using the Schlieren formula [Moisy et al. <em>Exp Fluids</em> (2009)
+46:1021–1036].</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="schlieren_checkerboard.main.DeformedCheckerboard.grad_from_disp_shift">
+<span class="sig-name descname"><span class="pre">grad_from_disp_shift</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#schlieren_checkerboard.main.DeformedCheckerboard.grad_from_disp_shift" title="Permalink to this definition">¶</a></dt>
+<dd><p>Same as grad_from_disp, but the base points are shifted by the
+displacement</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="schlieren_checkerboard.main.DeformedCheckerboard.lattice_matching">
+<span class="sig-name descname"><span class="pre">lattice_matching</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#schlieren_checkerboard.main.DeformedCheckerboard.lattice_matching" title="Permalink to this definition">¶</a></dt>
+<dd><p>Matches the corners to a square lattice</p>
+<p>Sets field “lm_corners” to an array with a line for each corner and 6        columns. Columns: [x, y, x index, y index, x reference, y reference]
+Reference is the actual position of the point before displacement.</p>
+<p>The origin of the lattice is set at the corner closest to the center of
+mass of the detected corners, or closest to the center if the center is
+defined. Then the detected corner closest to the origin is used as the
+second basis point. The first basis vector is obtained from these two
+points, the second basis vector is deduced by a <span class="math notranslate nohighlight">\(\pi/2\)</span> rotation.</p>
+<p>The reference point of a given point is obtained by multiplying the
+normalized basis vectors by the square size and the index of the point.
+If the image is a pure magnification of the original cherckerboard, the
+reference coordinates would be a dilatation of the detected coordinates,
+translated to the origin.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="schlieren_checkerboard.main.DeformedCheckerboard.lattice_matching_tracking">
+<span class="sig-name descname"><span class="pre">lattice_matching_tracking</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref_im</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#schlieren_checkerboard.main.DeformedCheckerboard.lattice_matching_tracking" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tracks the points between the reference image and self and transfer the
+lattice matching of the reference image to self.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="schlieren_checkerboard.main.DeformedCheckerboard.plot_axisym_curv">
+<span class="sig-name descname"><span class="pre">plot_axisym_curv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plot_circle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#schlieren_checkerboard.main.DeformedCheckerboard.plot_axisym_curv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the axisymmetric approximation to the curvature
+field, together with the curvature field, and indicates the
+axisymmetry center.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>plot_circle</strong> (<em>bool</em>) – If True (default), plots a circle at the minimum of the             axisymmetric curvature on the curvature field.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="schlieren_checkerboard.main.DeformedCheckerboard.plot_corners">
+<span class="sig-name descname"><span class="pre">plot_corners</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">show_center</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#schlieren_checkerboard.main.DeformedCheckerboard.plot_corners" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shows the image with the detected corners on it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>show_center</strong> (<em>bool</em>) – If <cite>True</cite> (default) and the center is defined, shows it with a
+circle.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="schlieren_checkerboard.main.DeformedCheckerboard.plot_curvature">
+<span class="sig-name descname"><span class="pre">plot_curvature</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#schlieren_checkerboard.main.DeformedCheckerboard.plot_curvature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the curvature field.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="schlieren_checkerboard.main.DeformedCheckerboard.plot_disp">
+<span class="sig-name descname"><span class="pre">plot_disp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#schlieren_checkerboard.main.DeformedCheckerboard.plot_disp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the displacement field.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="schlieren_checkerboard.main.DeformedCheckerboard.plot_lattice_matching">
+<span class="sig-name descname"><span class="pre">plot_lattice_matching</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">show_center</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#schlieren_checkerboard.main.DeformedCheckerboard.plot_lattice_matching" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shows the image with the matched lattice</p>
+<p>Shows the image, the matched lattice, the corners (the base corners are
+highlighted), and the circle showing the center (if defined).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="schlieren_checkerboard.main.DeformedCheckerboard.plot_polar_proj_grad">
+<span class="sig-name descname"><span class="pre">plot_polar_proj_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spline_interp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#schlieren_checkerboard.main.DeformedCheckerboard.plot_polar_proj_grad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the height gradient field, together with its polar
+projection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>spline_interp</strong> (<em>bool</em>) – If True, shows a spline interpolation of the radial component. Default is false.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="schlieren_checkerboard.main.DeformedCheckerboard.point_from_indices">
+<span class="sig-name descname"><span class="pre">point_from_indices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#schlieren_checkerboard.main.DeformedCheckerboard.point_from_indices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts a point with given indices in the list of lattice matched
+corners</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>i</strong> (<em>int</em>) – line index of the point</p></li>
+<li><p><strong>j</strong> (<em>int</em>) – column index of the point</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Coordinates of the point.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="schlieren_checkerboard.main.DeformedCheckerboard.polar_proj_grad">
+<span class="sig-name descname"><span class="pre">polar_proj_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#schlieren_checkerboard.main.DeformedCheckerboard.polar_proj_grad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the polar projection of the shifted gradient field.</p>
+<p>Sets the field <cite>rp_grad</cite>, which contains the center, the shift, and
+an array with a line for each corner and 3 columns
+(r, grad_r, grad_theta).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xc</strong> (<em>float</em>) – x position of the axisymmetry center.</p></li>
+<li><p><strong>yc</strong> (<em>float</em>) – y position of the axisymmetry center.</p></li>
+<li><p><strong>shift</strong> (<em>bool</em>) – If True (default), adds a constant vector to the gradient field
+so that its value at (xc, yc) is zero.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<span class="target" id="module-schlieren_checkerboard.utils"></span><p>Utilities</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="schlieren_checkerboard.utils.fit_gradient_const_curv">
+<span class="sig-prename descclassname"><span class="pre">schlieren_checkerboard.utils.</span></span><span class="sig-name descname"><span class="pre">fit_gradient_const_curv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grad</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#schlieren_checkerboard.utils.fit_gradient_const_curv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fits a gradient field to a gradient corresponding to a constant curvature</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="schlieren_checkerboard.utils.matching_points">
+<span class="sig-prename descclassname"><span class="pre">schlieren_checkerboard.utils.</span></span><span class="sig-name descname"><span class="pre">matching_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">match_range</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#schlieren_checkerboard.utils.matching_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the matching points between two lists of points</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="schlieren_checkerboard.utils.polar_proj_vec">
+<span class="sig-prename descclassname"><span class="pre">schlieren_checkerboard.utils.</span></span><span class="sig-name descname"><span class="pre">polar_proj_vec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#schlieren_checkerboard.utils.polar_proj_vec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the polar projection of a vector field</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>v</strong> (<em>array</em>) – Vector field, as a 4 columns array (x, y, vx, vy)</p></li>
+<li><p><strong>x0</strong> (<em>float</em>) – x-coordinate of the polar center</p></li>
+<li><p><strong>y0</strong> (<em>float</em>) – y-coordinate of the polar center</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Array with a line for each point and 3 columns (r, vr, vtheta).</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="SC_Demo.html" class="btn btn-neutral float-left" title="SchlierenCheckerboard Demo" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Vincent Démery.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

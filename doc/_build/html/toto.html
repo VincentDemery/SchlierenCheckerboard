@@ -1,0 +1,718 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SchlierenCheckerboard Demo &#8212; Schlieren_Checkerboard  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="api.html" />
+    <link rel="prev" title="User guide" href="userguide.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="api.html" title="API Reference"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="userguide.html" title="User guide"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Schlieren_Checkerboard  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="userguide.html" accesskey="U">User guide</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">SchlierenCheckerboard Demo</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+</style>
+<div class="section" id="SchlierenCheckerboard-Demo">
+<h1>SchlierenCheckerboard Demo<a class="headerlink" href="#SchlierenCheckerboard-Demo" title="Permalink to this headline">¶</a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>import numpy as np
+from skimage.io import imread
+from skimage.util import img_as_float
+
+import sys
+sys.path.insert(1, &#39;../../&#39;)
+import schlieren_checkerboard as sc
+</pre></div>
+</div>
+</div>
+<p>Parameters of the experiment and images (these are actually the default parameters) :</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>pixmm = 0.025
+sqmm  = 0.5
+h     = 10
+alpha = 0.24
+</pre></div>
+</div>
+</div>
+<div class="section" id="Analyze-a-single-image">
+<h2>Analyze a single image<a class="headerlink" href="#Analyze-a-single-image" title="Permalink to this headline">¶</a></h2>
+<p>First load the image and create the deformed checkerboard object</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>img_file = &#39;images/image18.tif&#39;
+img = img_as_float(imread(img_file, as_gray=True))
+dcf = sc.DeformedCheckerboard(img)
+</pre></div>
+</div>
+</div>
+<p>Then detect the corners and display</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>min_distance=8 #these are the default parameters
+window_size=13
+dcf.detect_corners(min_distance=min_distance, window_size=window_size)
+
+dcf.plot_corners()
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+detect_corners: 126 corners detected
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/toto_7_1.png" src="_images/toto_7_1.png" />
+</div>
+</div>
+<p>Identify the center region where the lattice is not too deformed (meaning that the curvature is roughly constant)</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>dcf.center = [3.4, 4., 1.5]
+dcf.plot_corners()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/toto_9_0.png" src="_images/toto_9_0.png" />
+</div>
+</div>
+<p>Then match the corners to a lattice. The central point (closest to the defined center) and its nearest neighbor are used to determine the basis. Of course, the lattice matching is completely off when the deformation is large.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>dcf.lattice_matching()
+dcf.plot_lattice_matching()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/toto_11_0.png" src="_images/toto_11_0.png" />
+</div>
+</div>
+<p>Compute the displacement of the corners, deduce the gradient with Schlieren formula [Moisy et al. <em>Exp Fluids</em> (2009) 46:1021–1036], and fit to a gradient of constant curvature for the center region to get the curvature.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>dcf.disp_from_lm_corners()
+dcf.grad_from_disp()
+dcf.compute_center_curv()
+
+print(&#39;Curvature in the center: &#39;, dcf.center_curv[0], &#39;/mm&#39;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Curvature in the center:  0.07555093421747393 /mm
+</pre></div></div>
+</div>
+<p><strong>Warning:</strong> Since the lattice matching is completely off out of the center region, the displacement is wrong and so are all the quantities computed from it.</p>
+<p>Below we show the full displacement field.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>dcf.plot_disp()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/toto_15_0.png" src="_images/toto_15_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Analyze-a-sequence-of-images-using-corner-tracking">
+<h2>Analyze a sequence of images using corner tracking<a class="headerlink" href="#Analyze-a-sequence-of-images-using-corner-tracking" title="Permalink to this headline">¶</a></h2>
+<p>First load the images</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>img_files = [&#39;images/image{:02d}.tif&#39;.format(i) for i in range(1, 19)]
+img_list = [img_as_float(imread(img_file, as_gray=True)) for img_file in img_files]
+dc_list = [sc.DeformedCheckerboard(img) for img in img_list]
+</pre></div>
+</div>
+</div>
+<p>Then detect the corners</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>min_distance=8 #these are the default parameters
+window_size=13
+
+for dc in dc_list :
+    dc.detect_corners(min_distance=min_distance, window_size=window_size)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+detect_corners: 145 corners detected
+detect_corners: 143 corners detected
+detect_corners: 141 corners detected
+detect_corners: 140 corners detected
+detect_corners: 136 corners detected
+detect_corners: 133 corners detected
+detect_corners: 126 corners detected
+detect_corners: 126 corners detected
+detect_corners: 123 corners detected
+detect_corners: 120 corners detected
+detect_corners: 121 corners detected
+detect_corners: 120 corners detected
+detect_corners: 121 corners detected
+detect_corners: 124 corners detected
+detect_corners: 125 corners detected
+detect_corners: 127 corners detected
+detect_corners: 129 corners detected
+detect_corners: 126 corners detected
+</pre></div></div>
+</div>
+<p>As can be seen, the curvature in the first image is almost constant and all the corners can be mapped on a square lattice. Here the center is not defined, so the corner closest to the center of mass of the detected corners is used.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>dc_list[0].lattice_matching()
+dc_list[0].plot_lattice_matching()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/toto_22_0.png" src="_images/toto_22_0.png" />
+</div>
+</div>
+<p>Then we can track the corners between the following images in order to attribute a lattice point to every corner on all the images. This allows to get the displacement for all images.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>for i, dc in enumerate(dc_list[1:]) :
+    dc.lattice_matching_tracking(dc_list[i])
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+lattice_matching_tracking: 143 matches found
+lattice_matching_tracking: 141 matches found
+lattice_matching_tracking: 139 matches found
+lattice_matching_tracking: 135 matches found
+lattice_matching_tracking: 132 matches found
+lattice_matching_tracking: 125 matches found
+lattice_matching_tracking: 125 matches found
+lattice_matching_tracking: 121 matches found
+lattice_matching_tracking: 118 matches found
+lattice_matching_tracking: 117 matches found
+lattice_matching_tracking: 116 matches found
+lattice_matching_tracking: 114 matches found
+lattice_matching_tracking: 113 matches found
+lattice_matching_tracking: 113 matches found
+lattice_matching_tracking: 112 matches found
+lattice_matching_tracking: 111 matches found
+lattice_matching_tracking: 107 matches found
+</pre></div></div>
+</div>
+<p>Now the displacement and the gradient field can be computed. Interpolating the gradient field, we have access to the curvature. Note that the curvature is by default calculated only in the convex hull of the detected corners.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>for dc in dc_list :
+    dc.disp_from_lm_corners()
+    dc.grad_from_disp()
+    dc.curv_from_grad()
+
+dc_list[-1].plot_curvature()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/toto_26_0.png" src="_images/toto_26_0.png" />
+</div>
+</div>
+<p>Approximating the curvature field as axisymmetric, we can get its axisymmetric approximation.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>dc_list[-1].axisym_curv(n=30, xguess=3.5, yguess=4., optimize=True)
+dc_list[-1].plot_axisym_curv()
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+axisymmetry center: [3.3639462379028777, 4.113280015539842]
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/toto_28_1.png" src="_images/toto_28_1.png" />
+</div>
+</div>
+<p>Note the difference between the (wrong) displacement obtained before by direct lattice matching (top graph below) to the right displacement obtained with lattice tracking (bottom graph).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>dcf.plot_disp()
+dc_list[-1].plot_disp()
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/toto_30_0.png" src="_images/toto_30_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/toto_30_1.png" src="_images/toto_30_1.png" />
+</div>
+</div>
+<p>Alternatively, we can plot the gradient field in polar coordinates around the center found previously. To do that, we have to shift the gradient by a constant vector for the gradient to be zero at the center; we have this freedom since there is an arbitrary component in the gradient, which is set by the reference point that we choose.</p>
+<p>The left panel below shows the shifted gradient field with the given center (red circle). The right panel shows the radial (filled circles) and azimuthal (open circles) components of the gradient as a function of the distance to the center.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>dc_list[-1].polar_proj_grad(*dc_list[-1].axicurv[0])
+dc_list[-1].plot_polar_proj_grad()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/toto_32_0.png" src="_images/toto_32_0.png" />
+</div>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">SchlierenCheckerboard Demo</a><ul>
+<li><a class="reference internal" href="#Analyze-a-single-image">Analyze a single image</a></li>
+<li><a class="reference internal" href="#Analyze-a-sequence-of-images-using-corner-tracking">Analyze a sequence of images using corner tracking</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="userguide.html"
+                        title="previous chapter">User guide</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="api.html"
+                        title="next chapter">API Reference</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/toto.ipynb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="api.html" title="API Reference"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="userguide.html" title="User guide"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Schlieren_Checkerboard  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="userguide.html" >User guide</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">SchlierenCheckerboard Demo</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Vincent Démery.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.1.0.
+    </div>
+  </body>
+</html>
